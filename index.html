@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folio Notes — Linked Markdown Notebook &amp; Knowledge Graph</title>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <script defer src="js/db.js"></script>
+  <script defer src="js/markdown.js"></script>
+  <script defer src="js/graph.js"></script>
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <div class="vault-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Notes explorer">
+      <div class="brand-row">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">F</div>
+          <h1>Folio Notes</h1>
+        </div>
+        <button type="button" class="btn btn-primary" id="newNoteBtn">+ Note</button>
+      </div>
+
+      <input type="search" class="search-input" id="searchInput" placeholder="Search notes or #tags..." aria-label="Search notes">
+
+      <div class="tag-strip" id="tagStrip" role="group" aria-label="Filter by tag"></div>
+
+      <div class="notes-list" id="notesList" role="list" aria-label="Vault notes"></div>
+
+      <div class="sidebar-footer">
+        <button type="button" class="btn" id="exportVaultBtn">Export Vault JSON</button>
+        <button type="button" class="btn" id="resetDemoBtn">Reset Demo</button>
+      </div>
+    </aside>
+
+    <section class="main-col" aria-label="Active note workspace">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button type="button" class="btn mobile-menu-btn" id="toggleSidebarBtn">Notes</button>
+          <div class="view-tabs" role="tablist" aria-label="Workspace view mode">
+            <button type="button" class="tab-btn is-active" data-mode="split">Split</button>
+            <button type="button" class="tab-btn" data-mode="editor">Write</button>
+            <button type="button" class="tab-btn" data-mode="preview">Read</button>
+            <button type="button" class="tab-btn" data-mode="graph">Graph</button>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button type="button" class="btn" id="exportMdBtn">Download .md</button>
+          <button type="button" class="btn btn-danger" id="deleteNoteBtn">Delete</button>
+        </div>
+      </header>
+
+      <div class="note-header" id="noteHeader">
+        <input type="text" class="note-title-input" id="noteTitleInput" placeholder="Untitled Note..." aria-label="Note title">
+        <div class="fmt-toolbar">
+          <div class="fmt-buttons" role="group" aria-label="Markdown quick formatting">
+            <button type="button" class="fmt-btn" data-snippet="## ">H2</button>
+            <button type="button" class="fmt-btn" data-wrap="**">Bold</button>
+            <button type="button" class="fmt-btn" data-wrap="`">Code</button>
+            <button type="button" class="fmt-btn" data-snippet="- [ ] ">Task</button>
+            <button type="button" class="fmt-btn" data-snippet="> ">Quote</button>
+            <button type="button" class="fmt-btn" data-snippet="[[]]">[[Link]]</button>
+          </div>
+          <span class="word-stats" id="wordStats">0 words · IndexedDB saved</span>
+        </div>
+      </div>
+
+      <div class="panes-stage mode-split" id="panesStage">
+        <div class="editor-pane" id="editorPane">
+          <textarea class="md-textarea" id="mdTextarea" placeholder="Start writing Markdown, #tags, or [[Wiki Links]]..." aria-label="Markdown editor"></textarea>
+        </div>
+
+        <div class="preview-pane md-body" id="previewPane" aria-label="Rendered Markdown preview"></div>
+
+        <div class="graph-pane" id="graphPane" hidden>
+          <div class="graph-toolbar">
+            <span><strong>Knowledge Graph</strong> &middot; Drag nodes to arrange &middot; Click any node to open note</span>
+            <button type="button" class="btn" id="reheatGraphBtn">Re-Layout Graph</button>
+          </div>
+          <canvas id="graphCanvas" width="900" height="520" aria-label="Interactive note connection graph"></canvas>
+        </div>
+      </div>
+
+      <footer class="connections-bar" id="connectionsBar">
+        <span class="conn-label">Backlinks:</span>
+        <div id="backlinksList" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+      </footer>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" hidden role="status" aria-live="polite"></div>
+</body>
+</html>
